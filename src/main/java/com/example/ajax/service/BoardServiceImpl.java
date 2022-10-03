@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import org.json.simple.JSONObject;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
@@ -19,8 +21,19 @@ public class BoardServiceImpl implements BoardService {
     }
 
     @Override
-    public void INSERT_BOARD(Board board) {
-       boardMapper.INSERT_BOARD(board);
+    public int COUNT_BOARD(Board dto) {
+        return boardMapper.COUNT_BOARD(dto);
+    }
+
+    @Override
+    public  List<Board> SELECT_BOARD_LIST(Board dto) {
+        return boardMapper.SELECT_BOARD_LIST(dto);
+    }
+
+
+    @Override
+    public void INSERT_BOARD(Board dto) {
+       boardMapper.INSERT_BOARD(dto);
     }
 
     @Override

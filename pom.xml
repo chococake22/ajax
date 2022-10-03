@@ -79,6 +79,14 @@
             <version>1.4</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/javax.servlet/jstl -->
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>jstl</artifactId>
+            <version>1.2</version>
+        </dependency>
+
+
         <!-- MyBatis ( 2020-08-24기준 최신버전 ) -->
         <!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
         <dependency>

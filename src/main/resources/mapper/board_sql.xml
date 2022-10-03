@@ -12,6 +12,25 @@
             board_id = #{boardId}
     </select>
 
+    <select id="COUNT_BOARD" parameterType="Board" resultType="int">
+        SELECT
+            COUNT(*)
+        FROM
+            TB_BOARD
+    </select>
+
+    <select id="SELECT_BOARD_LIST" parameterType="Board" resultType="Board">
+        SELECT
+            board_id,
+            name,
+            gender,
+            age,
+            phone,
+            blind_yn
+        FROM
+            TB_BOARD
+    </select>
+
     <insert id="INSERT_BOARD" parameterType="Board">
         INSERT INTO TB_BOARD(name, gender, age, phone, blind_yn)
         VALUES(#{name}, #{gender}, #{age}, #{phone}, #{blindYn})

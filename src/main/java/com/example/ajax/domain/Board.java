@@ -1,9 +1,15 @@
 package com.example.ajax.domain;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
-public class Board {
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class Board extends Page {
 
     private Long boardId;
     private String name;

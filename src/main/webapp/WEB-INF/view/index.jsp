@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,98 +15,92 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.min.js" integrity="sha384-QJHtvGhmr9XOIpI6YVutG+2QOK9T+ZnN4kzFN1RtK3zEFEIsxhlmWl5/YESvpZ13" crossorigin="anonymous"></script>
 </head>
 <body>
-    <form id="form_submit" action="/test/ajax" method="post" enctype="multipart/form-data">
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="name" name="name" placeholder="이름">
-            <label for="name">이름</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="age" name="age" placeholder="나이">
-            <label for="age">나이</label>
-        </div>
-        <div class="form-floating mb-3">
-            <input type="text" class="form-control" id="phone" name="phone" placeholder="전화번호">
-            <label for="phone">전화번호</label>
-        </div>
-        <div class="form-floating mb-3">
-        <select class="form-select" id="gender" name="gender" aria-label="Default select example">
-            <option selected>성별</option>
-            <option value="man">남자</option>
-            <option value="woman">여자</option>
-        </select>
-        </div>
-        <div class="form-floating mb-3" id="fileDiv">
-            <input type="button" id="fileAdd" name="fileAdd" value="추가">
-            <div id="fileBox">
-<%--                <input class="form-control"  name="files" type="file" id="file1">--%>
-            </div>
-        </div>
-        <input type="button" id="Btn_Submit" value="전송"/>
-    </form>
+<table class="table">
 
-    <div class="form-floating mb-3">
-        <input type="text" class="form-control" id="testVal" name="testVal" placeholder="테스트용">
-        <label for="testVal">제이쿼리 값 가져오기</label>
-        <input type="button" onclick="getJquery()" value="실행">
-    </div>
+    <button type="button" class="btn btn-success" onclick="fn_Blind()">블라인드</button>
+
+    <thead>
+    <tr>
+        <th scope="col"><input class="form-check-input" onclick="fn_Blind_ALL(this)" type="checkbox" id="flexCheckDefault"></th>
+        <th scope="col">번호</th>
+        <th scope="col">이름</th>
+        <th scope="col">성별</th>
+        <th scope="col">전화번호</th>
+        <th scope="col">블라인드 여부</th>
+    </tr>
+    </thead>
+    <tbody>
+        <c:forEach items="${boards}" var="board">
+            <tr>
+                <td><input class="form-check-input" type="checkbox" name="blindYn" value="${board.boardId}"></td>
+                <td>${board.boardId}</td>
+                <td>${board.name}</td>
+                <td>${board.gender}</td>
+                <td>${board.phone}</td>
+                <td>${board.blindYn}</td>
+            </tr>
+        </c:forEach>
+    </tbody>
+</table>
+
+<a href="/save">등록하기</a>
+<jsp:include page="/WEB-INF/view/common/pagination.jsp"/>
 
 <script type="text/javascript">
 
-    function getJquery() {
-        // 제이쿼리로 name이 testVal인 값 가젹오기
-        var value = $('input[name=testVal]').val();
-        console.log(value);
-    }
+    function fn_Blind() {
 
-    // 첨부파일 개수
-    var cnt = 2;
+        var ids = document.getElementsByName("blindYn").length;
 
-    // 첨부 파일 개수 추가
-    $("#fileAdd").click(function () {
-
-        if (cnt > 3) {
-            alert("첨부는 최대 3개요");
-            return;
+        for (var i = 0; i < ids; i++) {
+            if (document.getElementsByName("blindYn")[i].checked == true) {
+                console.log(document.getElementsByName("blindYn")[i].value);
+            }
         }
 
-        var str= '<div class="mb-3"> ' +
-            '<label for="formFile" class="form-label">파일 선택</label> ' +
-            '<input class="form-control"  name="files" type="file" id="file' + cnt + '"> ' +
-            '<input type="button" name="delete" id="delete" onclick="delete_file(this.id)" value="삭제">' +
-            '</div>';
-        $("#fileBox").append(str);
-        cnt++;
-    });
+        let arr = [];
 
-    // 첨부 파일 삭제
-    function delete_file(id) {
-       var getId = document.getElementById(id);
-       getId.parentElement.remove();
-       cnt--;
-    }
+        // 선택된 boardId값들을 배열로 넣기
+        for (let i = 0; i < ids; i++) {
+            if (document.getElementsByName("blindYn")[i].checked == true) {
+                let val = document.getElementsByName("blindYn")[i].value;
+                console.log(val);
+                arr.push(val);
+            }
+        };
 
-    // 전송
-    $("#Btn_Submit").click(function () {
-
-        var form = $('#form_submit')[0];    // 이렇게 하면 id가 form_submit인 Form에 있는 모든 데이터를 가져온다.
-        var formData = new FormData(form);
+        let formData = {
+            "data": arr
+        };
 
         $.ajax({
             type: "POST",
-            enctype: "multipart/form-data",
-            url: "/test/ajax",
-            data: formData,
-            contentType: false,
-            processData: false,
+            url: "/board/blind",
+            contentType: "application/json",    // ajax->java
+            dataType: 'json',   // java -> ajax(success or error)
+            data: JSON.stringify(formData),
             success: function (res) {
                 console.log(res);
-                alert("문자열, 데이터 전송 성공~~");
+                alert("블라인드 처리 했다요");
             },
-            error: function (XMLHttpRequest, textStatus, errorThrown) {
+            error: function (err) {
                 alert("실패ㅠㅠ");
             }
         })
-    })
+    }
+
+    function fn_Blind_ALL(selectAll) {
+
+        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+
+        // forEach로 반복문 돌리기.
+        checkboxes.forEach((checkbox) => {
+            // board의 체크박스 각각이 체크되는 것이 selectAll이라는 거 하나가 체크되는 것과 같다.
+            checkbox.checked = selectAll.checked;
+        })
+    }
+
+
 </script>
 
 </body>
