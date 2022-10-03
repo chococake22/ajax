@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.ajax.mapper.BoardMapper">
+    <select id="BOARD_SELECT" parameterType="Long" resultType="JSON">
+        SELECT
+            *
+        FROM
+            TB_BOARD
+        WHERE
+            board_id = #{boardId}
+    </select>
+
+    <insert id="INSERT_BOARD" parameterType="Board">
+        INSERT INTO TB_BOARD(name, gender, age, phone, blind_yn)
+        VALUES(#{name}, #{gender}, #{age}, #{phone}, #{blindYn})
+    </insert>
+
+    <insert id="INSERT_BOARD_ATTACHED_FILE" parameterType="AttachedFile">
+        INSERT INTO TB_BOARD_ATTACHED_FILE(file_name, file_path, reg_id, reg_dt, mod_id, mod_dt, blind_yn)
+        VALUES(#{filename}, #{filePath}, #{regId}, DATE_FORMAT(NOW(), "%Y%m%d%H%i%s"), #{regId}, DATE_FORMAT(NOW(), "%Y%m%d%H%i%s"), #{blindYn})
+    </insert>
+
+</mapper>

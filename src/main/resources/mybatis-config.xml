@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <typeAliases>
+
+<!--        <typeAlias alias="Board" type="kr.com.myshop.domain.Board"/>-->
+        <typeAlias alias="JSON" type="org.json.simple.JSONObject"/>
+        <typeAlias alias="AttachedFile" type="com.example.ajax.domain.AttachedFile"/>
+        <typeAlias alias="Board" type="com.example.ajax.domain.Board"/>
+
+    </typeAliases>
+
+</configuration>
